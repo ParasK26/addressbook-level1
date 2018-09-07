@@ -89,7 +89,9 @@ public class AddressBook {
     private static final String MESSAGE_PERSONS_FOUND_OVERVIEW = "%1$d persons found!";
     private static final String MESSAGE_STORAGE_FILE_CREATED = "Created new empty storage file: %1$s";
     private static final String MESSAGE_WELCOME = "Welcome to your Address Book!";
+    private static final String MESSAGE_PASSWORD_PROMPT = "Please enter your password to access the address book: ";
     private static final String MESSAGE_USING_DEFAULT_FILE = "Using default storage file : " + DEFAULT_STORAGE_FILEPATH;
+    private static final String MESSAGE_INVALID_PASSWORD = "Invalid password entered.";
 
     // These are the prefix strings to define the data type of a command parameter
     private static final String PERSON_DATA_PREFIX_PHONE = "p/";
@@ -133,6 +135,7 @@ public class AddressBook {
     private static final String COMMAND_EXIT_DESC = "Exits the program.";
     private static final String COMMAND_EXIT_EXAMPLE = COMMAND_EXIT_WORD;
 
+    private static final String PASSWORD = "password123";
     private static final String DIVIDER = "===================================================";
 
 
@@ -208,6 +211,7 @@ public class AddressBook {
 
     public static void main(String[] args) {
         showWelcomeMessage();
+        checkUserPassword();
         processProgramArgs(args);
         loadDataFromStorage();
         while (true) {
@@ -228,6 +232,16 @@ public class AddressBook {
 
     private static void showWelcomeMessage() {
         showToUser(DIVIDER, DIVIDER, VERSION, MESSAGE_WELCOME, DIVIDER);
+    }
+
+    private static void checkUserPassword() {
+        String inputPassword;
+        System.out.print(MESSAGE_PASSWORD_PROMPT);
+        inputPassword = SCANNER.nextLine();
+        while (!inputPassword.equals(PASSWORD)) {
+            System.out.print(MESSAGE_INVALID_PASSWORD + "\n" + MESSAGE_PASSWORD_PROMPT);
+            inputPassword = SCANNER.nextLine();
+        }
     }
 
     private static void showResultToUser(String result) {
@@ -576,6 +590,11 @@ public class AddressBook {
     private static String executeListAllPersonsInAddressBook() {
         ArrayList<String[]> toBeDisplayed = getAllPersonsInAddressBook();
         showToUser(toBeDisplayed);
+        return getMessageForPersonsDisplayedSummary(toBeDisplayed);
+    }
+
+    private static String executeListAllPersonsInAddressBookAlphabetically() {
+        ArrayList<String[]> toBeDisplayed = getAllPersonsInAddressBook();
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
     }
 
